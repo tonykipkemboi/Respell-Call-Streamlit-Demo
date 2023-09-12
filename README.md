@@ -1,5 +1,7 @@
 # Respell Call Streamlit App 📞
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://respellcall.streamlit.app/)
+
 Hey there, code explorer!👋🏾
 
 ![Conversation Catalyst](assets/phone.png)
