@@ -26,10 +26,9 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# st.title("Respell Virtual Assistant!")
 st.caption(
     "Makes a call to the phone number provided and carries out the objective!")
-with st.expander("How to use the app"):
+with st.expander(":blue[**How to use the app**]"):
     st.markdown(
         """
         1. Enter a valid phone number.
@@ -70,14 +69,14 @@ if "messages" not in st.session_state:
 
 # Ask for user input
 with st.form("my_form"):
-    st.subheader("Initiate a Call")
+    st.subheader(":blue[Initiate a Call]", anchor=False)
     phone_number = st.text_input(
         "**Phone Number**", placeholder="📞 (123) 456-7890", help="Enter the phone number you want to call.")
     objective = st.text_area(
         "**Objective**", placeholder="Type here...", help="Specify the objective of the call.")
     # Submit inputs
     submitted = st.form_submit_button(
-        "▶️ Call", use_container_width=True)
+        ":blue[▶️ Call]", use_container_width=True)
 
 if submitted:
     try:
