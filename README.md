@@ -14,7 +14,7 @@ This Streamlit app is your virtual assistant, making calls to the phone number y
 
 ## Features 🫠
 
-- **`User-Friendly Interface`**: Easy-peasy lemon squeezy! Just follow the instructions and you'll be on your way.
+- **`User-Friendly Interface`**: Streamlit UI which make building Python apps easy-peasy lemon squeezy! Just follow the instructions and you'll be on your way.
 
 - **`Secure API Calls`**: Utilizes the Respell API for secure and efficient calls.
 
