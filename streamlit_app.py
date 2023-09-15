@@ -112,7 +112,7 @@ if submitted:
         st.session_state.messages.extend(structured_messages)
 
         # Display all messages from the session state
-        st.subheader(":blue[Chat Transcript]")
+        st.subheader(":blue[Call Transcript]")
         for message in st.session_state.messages:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
