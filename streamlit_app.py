@@ -128,6 +128,7 @@ st.markdown(
     <p style='text-align: center; font-size: small;'>
         Made with 💙 by <a href='https://twitter.com/tonykipkemboi' target='_blank'>@tonykipkemboi</a> 
         | Find me on <a href='https://linkedin.com/in/tonykipkemboi' target='_blank'>LinkedIn</a>
+        | Demo App <a href='https://github.com/tonykipkemboi/Respell-Call-Streamlit-Demo.git' target='_blank'>GitHub Repo</a>
     </p>
     """,
     unsafe_allow_html=True,
