@@ -35,7 +35,7 @@ with st.expander(":blue[**Inspiring Example by [@harpriiya](https://x.com/harpri
         """
         <iframe src="https://twitframe.com/show?url=https://twitter.com/harpriiya/status/1682165101867175936" 
                 width="650" 
-                height="800" 
+                height="795" 
                 frameborder="0" 
                 scrolling="no">
         </iframe>
