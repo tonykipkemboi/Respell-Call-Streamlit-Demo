@@ -15,7 +15,8 @@ This Streamlit app is your virtual assistant, making calls to the phone number y
 ## Features 🫠
 
 - **`User-Friendly Interface`**: Easy-peasy lemon squeezy! Just follow the instructions and you'll be on your way.
-  Secure API Calls: Utilizes the Respell API for secure and efficient calls.
+
+- **`Secure API Calls`**: Utilizes the Respell API for secure and efficient calls.
 
 - **`Interactive Chat Transcript`**: You get a neat transcript of your call, so you can analyze all the little details afterwards.
 
