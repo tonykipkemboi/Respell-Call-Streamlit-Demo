@@ -83,6 +83,7 @@ with st.form("my_form"):
     # Submit inputs
     submitted = st.form_submit_button(
         ":blue[▶️ Call]", use_container_width=True)
+    st.caption("* Next step will be to make the transcript streaming...")
 
 if submitted:
     try:
