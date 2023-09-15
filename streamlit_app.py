@@ -30,14 +30,17 @@ st.markdown(
 
 st.caption(
     "Makes a call to the phone number provided and carries out the objective!")
-with st.expander(":blue[**How to use the app**]"):
+with st.expander(":blue[**Inspiring Example by [@harpriiya](https://x.com/harpriiya?s=20)**]"):
     st.markdown(
         """
-        1. Enter a valid phone number.
-        2. Specify the objective of the call.
-        3. Hit the 'Call' button to initiate the conversation.
-        4. A transcript of the call will be displayed after the call is over!
-        """
+        <iframe src="https://twitframe.com/show?url=https://twitter.com/harpriiya/status/1682165101867175936" 
+                width="500" 
+                height="800" 
+                frameborder="0" 
+                scrolling="no">
+        </iframe>
+        """,
+        unsafe_allow_html=True,
     )
 st.divider()
 
@@ -72,6 +75,7 @@ if "messages" not in st.session_state:
 # Ask for user input
 with st.form("my_form"):
     st.subheader(":blue[Initiate a Call]", anchor=False)
+    st.caption("Call transcript will be displayed below after the call.")
     phone_number = st.text_input(
         "**Phone Number**", placeholder="📞 (123) 456-7890", help="Enter the phone number you want to call.")
     objective = st.text_area(
@@ -107,7 +111,7 @@ if submitted:
         st.session_state.messages.extend(structured_messages)
 
         # Display all messages from the session state
-        st.header("Chat Transcript")
+        st.subheader(":blue[Chat Transcript]")
         for message in st.session_state.messages:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
@@ -116,3 +120,15 @@ if submitted:
         st.error(f"An error has occured: {e}", icon="🚨")
 else:
     pass
+
+st.markdown(
+    """
+    <hr>
+    <p style='text-align: center; font-size: small;'>
+        Made with 💙 by <a href='https://twitter.com/tonykipkemboi' target='_blank'>@tonykipkemboi</a> 
+        | Find me on <a href='https://linkedin.com/in/tonykipkemboi' target='_blank'>LinkedIn</a>
+    </p>
+    """,
+    unsafe_allow_html=True,
+)
+
