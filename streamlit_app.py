@@ -77,7 +77,7 @@ with st.form("my_form"):
     st.subheader(":blue[Initiate a Call]", anchor=False)
     st.caption("Call transcript will be displayed below after the call.")
     phone_number = st.text_input(
-        "**Phone Number**", placeholder="📞 (123) 456-7890", help="Enter the phone number you want to call.")
+        "**Phone Number**", placeholder="📞 (123) 456-7890", help="Enter the phone number you want to call.", type="password")
     objective = st.text_area(
         "**Objective**", placeholder="Type here...", help="Specify the objective of the call.")
     # Submit inputs
