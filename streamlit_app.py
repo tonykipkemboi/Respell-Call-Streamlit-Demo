@@ -161,6 +161,13 @@ else:
 
 # ------------------ Credits --------------------
 
+hide_streamlit_style = """
+            <style>
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 st.markdown(
     """
     <hr>
@@ -168,6 +175,12 @@ st.markdown(
         Made with 💙 by <a href='https://twitter.com/tonykipkemboi' target='_blank'>@tonykipkemboi</a> 
         | Find me on <a href='https://linkedin.com/in/tonykipkemboi' target='_blank'>LinkedIn</a>
         | Check out & ⭐️ <a href='https://github.com/tonykipkemboi/Respell-Call-Streamlit-Demo.git' target='_blank'>GitHub Repo</a>
+    </p>
+    <p style='text-align: center; font-size: small;'>
+        Powered by 🔋 
+        <a href="https://streamlit.io" target="_blank">Streamlit</a>, 
+        <a href="https://www.respell.ai/" target="_blank">Respell</a>, & 
+        <a href="https://www.lakera.ai/" target="_blank">Lakera</a>
     </p>
     """,
     unsafe_allow_html=True,
