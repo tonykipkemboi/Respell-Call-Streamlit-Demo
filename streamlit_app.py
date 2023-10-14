@@ -3,6 +3,9 @@ import requests
 import json
 import re
 
+from typing import List, Dict, Union
+
+# ------------------ Configuration and UI setup -------------------
 
 st.set_page_config(
     page_title="Respell Call Streamlit App",
@@ -10,6 +13,7 @@ st.set_page_config(
     layout="centered",
 )
 
+# Logo and brand display
 st.markdown(
     """
     <a href="https://www.respell.ai/" target="_blank">
@@ -44,16 +48,20 @@ with st.expander(":blue[**Inspiring Example by [@harpriiya](https://x.com/harpri
     )
 st.divider()
 
-# Get credentials from secrets.toml
+
+# ------------------ API and Secret Keys -------------------------
+
 RESPELL_API = st.secrets["RESPELL_API"]
 SPELL_ID = st.secrets["SPELL_ID"]
 SPELL_VERSION = st.secrets["SPELL_VERSION"]
+LAKERA_GUARD_ACCESS_KEY = st.secrets["LAKERA_API_KEY"]
+
+# --------------- Parsing and Transcript Logic --------------------
 
 
-def parse_transcript(transcript_text):
-    # Split the transcript into separate messages by single newline
+def parse_transcript(transcript_text: str) -> List[Dict[str, Union[str, str]]]:
+    """Parse the transcript text into structured messages."""
     messages = transcript_text.split('\n')
-
     structured_messages = []
     for msg in messages:
         # Find the role and content of the message using regex
@@ -68,11 +76,13 @@ def parse_transcript(transcript_text):
     return structured_messages
 
 
-# Initialize session state for messages
+# --------------- Initialize and Handle Session State ------------
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Ask for user input
+# ------------------ User Input and API Calls --------------------
+
 with st.form("my_form"):
     st.subheader(":blue[Initiate a Call]", anchor=False)
     st.caption("Call transcript will be displayed below after the call.")
@@ -83,44 +93,73 @@ with st.form("my_form"):
     # Submit inputs
     submitted = st.form_submit_button(
         ":blue[▶️ Call]", use_container_width=True)
-    st.caption("*️⃣ Next app update will be to make the transcript streaming...")
+    st.caption(
+        "*️⃣ Next app update will be to make the transcript streaming...")
 
 if submitted:
     try:
-        response = requests.post(
-            "https://api.respell.ai/v1/run",
-            headers={
-                # This is your API key
-                "Authorization": RESPELL_API,
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            data=json.dumps({
-                "spellId": SPELL_ID,
-                "spellVersionId": SPELL_VERSION,
-                "inputs": {
-                    "phone_number": phone_number,
-                    "objective": objective,
-                }
-            })
+        # Moderation check using Lakera AI API
+        # do not send to Respell if prompt contains hate or sexual content
+        moderation = requests.post(
+            "https://api.lakera.ai/v1/moderation",
+            json={"input": objective},
+            headers={"Authorization": f"Bearer {LAKERA_GUARD_ACCESS_KEY}"},
         )
+        lakera_response = moderation.json()
+        hate_flag = lakera_response['results'][0]['categories']['hate']
+        sexual_flag = lakera_response['results'][0]['categories']['sexual']
 
-        response_data = response.json()
-        transcript_output = response_data.get('outputs', {}).get(
-            'output', 'No transcript available')
-        structured_messages = parse_transcript(transcript_output)
-        st.session_state.messages.extend(structured_messages)
+        if not (hate_flag or sexual_flag):
+            # Make the API call
+            response = requests.post(
+                "https://api.respell.ai/v1/run",
+                headers={
+                    # This is your API key
+                    "Authorization": RESPELL_API,
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                data=json.dumps({
+                    "spellId": SPELL_ID,
+                    "spellVersionId": SPELL_VERSION,
+                    "inputs": {
+                        "phone_number": phone_number,
+                        "objective": objective,
+                    }
+                })
+            )
+            # Process and display the transcript
+            response_data = response.json()
+            transcript_output = response_data.get('outputs', {}).get(
+                'output', 'No transcript available')
+            structured_messages = parse_transcript(transcript_output)
+            st.session_state.messages.extend(structured_messages)
 
-        # Display all messages from the session state
-        st.subheader(":blue[Call Transcript]")
-        for message in st.session_state.messages:
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
+            # Display all messages from the session state
+            st.subheader(":blue[Call Transcript]")
+            for message in st.session_state.messages:
+                with st.chat_message(message["role"]):
+                    st.markdown(message["content"])
+        else:
+            if hate_flag and sexual_flag:
+                st.warning(":red[Whoa there, your prompt contains both hate speech and sexual language. Let's keep it clean.]",
+                           icon="⛔️")
+                st.stop()
+            elif hate_flag:
+                st.warning(
+                    ":red[Hold up! Your prompt contains hate speech. Let's be nice.]", icon="🙅🏽‍♂️")
+                st.stop()
+            elif sexual_flag:
+                st.warning(
+                    ":red[Uh-oh, looks like your prompt has sexual language. Clean it up, please.]", icon="🔞")
+                st.stop()
 
     except Exception as e:
         st.error(f"An error has occured: {e}", icon="🚨")
 else:
-    pass
+    st.warning("Enter phone number and objective to make a call.", icon="⚠️")
+
+# ------------------ Credits --------------------
 
 st.markdown(
     """
@@ -128,9 +167,8 @@ st.markdown(
     <p style='text-align: center; font-size: small;'>
         Made with 💙 by <a href='https://twitter.com/tonykipkemboi' target='_blank'>@tonykipkemboi</a> 
         | Find me on <a href='https://linkedin.com/in/tonykipkemboi' target='_blank'>LinkedIn</a>
-        | Demo App <a href='https://github.com/tonykipkemboi/Respell-Call-Streamlit-Demo.git' target='_blank'>GitHub Repo</a>
+        | Check out & ⭐️ <a href='https://github.com/tonykipkemboi/Respell-Call-Streamlit-Demo.git' target='_blank'>GitHub Repo</a>
     </p>
     """,
     unsafe_allow_html=True,
 )
-
