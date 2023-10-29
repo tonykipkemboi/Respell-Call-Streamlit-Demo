@@ -4,6 +4,9 @@ import json
 import re
 
 from typing import List, Dict, Union
+from utils.logger import FirestoreLogger
+
+firestore_logger = FirestoreLogger()
 
 # ------------------ Configuration and UI setup -------------------
 
@@ -108,6 +111,13 @@ if submitted:
         lakera_response = moderation.json()
         hate_flag = lakera_response['results'][0]['categories']['hate']
         sexual_flag = lakera_response['results'][0]['categories']['sexual']
+
+        # Log to Firestore: just objective and flags
+        firestore_logger.to_firestore(
+            objective=objective,
+            hate_flag=hate_flag,
+            sexual_flag=sexual_flag
+        )
 
         if not (hate_flag or sexual_flag):
             # Make the API call
